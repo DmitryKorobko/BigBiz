@@ -1,0 +1,10 @@
+Order Allow,Deny
+Allow from all
+AddDefaultCharset utf-8
+DirectoryIndex index.php
+RewriteEngine on
+
+# Default rewrite
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]

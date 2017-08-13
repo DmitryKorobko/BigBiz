@@ -1,0 +1,47 @@
+:root {
+    --white: #ffffff;
+    --light-grey: #f9f9f9;
+    --black: #000000;
+    --green: #00ba65;
+    --greyish-brown: #3f3f3f;
+    --light-grey-two: #d9d9d9;
+    --green-two: #00bb65;
+    --brownish-grey: #5f5f5f;
+    --greyish: #a4a4a4;
+    --greyish-two: #aaaaaa;
+    --brownish-grey-two: #636363;
+    --black-two: #393939;
+    --dark-brown: #2A2D33;
+    --yellow: #ffeb3b;
+    --blue: #5b8cff;
+    --red: #f44336;
+}
+.green-text{
+    color: var(--green)!important;
+}
+.transparent-color{
+    background-color: transparent;
+    border: 2px solid var(--green);
+}
+.green{
+    /*background-color: transparent!important;*/
+    background-color: var(--green)!important;
+    border: 2px solid var(--green)!important;
+}
+.light-grey-text{
+    color: var(--greyish);
+}
+.grey-text{
+    color: var(--greyish-brown)!important;
+}
+.white-text{
+    color: var(--white)!important;
+}
+.white{
+    background-color: var(--white)!important;
+}
+.btn.transparent-color,
+.btn-large.transparent-color{
+    color: #212121!important;
+}
+.black-text{color: var(--black);}

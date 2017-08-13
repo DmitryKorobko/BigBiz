@@ -1,0 +1,180 @@
+/*========================================================== GENERAL-STYLE ====================================================*/
+section .section-post {
+    background-image: url("../css/img/bg.png");
+    background-repeat: repeat;
+}
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: url("/img/bg.png") repeat;
+}
+.container {
+    margin-right: auto;
+    margin-left: auto;
+}
+main {
+    flex: 1 0 auto;
+}
+textarea::-webkit-input-placeholder {color:#686868;}
+textarea::-moz-placeholder          {color:#686868;}/* Firefox 19+ */
+textarea:-moz-placeholder           {color:#686868;}/* Firefox 18- */
+textarea:-ms-input-placeholder      {color:#686868;}
+.section{
+    padding: 1.5rem 0;
+}
+.rel{
+    position: relative;
+}
+.pad-3rem{
+    padding: 3rem 0;
+}
+
+/*======================== TYPOGRAPHY ========================*/
+
+h2{
+    display: inline-block;
+    font-size: 4.2rem;
+    font-weight: 500;
+    vertical-align: middle;
+}
+h3{
+    font-size: 2.4rem;
+}
+.uppercase{
+    text-transform: uppercase;
+}
+.underline{
+    text-decoration: underline;
+}
+.underline:hover{
+    text-decoration: none;
+}
+
+.tiny{
+    font-size: 1.6rem;
+}
+i.small{
+    font-size: 1.6rem;
+}
+i.medium{
+    font-size: 2.6rem;
+}
+
+/*======================== COLORS ========================*/
+
+.blue{
+    border-color: #2196f3!important;
+}
+.red-bg{background-color: var(--red); color: var(--white)!important; border-color: var(--red)!important;}
+.green-bg-page{background: url("/img/bg.png") repeat;}
+
+/*==================================================== SINGLE POST PAGE ==============================================*/
+
+.single-post .card.card-post{
+    margin: 0;
+}
+.post-header{
+    position: relative;
+    background-color: var(--light-grey-two);
+}
+.bg-img{
+    background-size: cover;
+}
+.post-image img{
+    position: relative;
+    display: block;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.single-post-title{
+    display: block;
+    font-size: 4.8rem;
+    max-width: 1170px;
+    margin: auto;
+    line-height: 1.2;
+    letter-spacing: 5px;
+
+}
+.post-header .single-post-title{
+    color: var(--greyish-brown);
+    position: relative;
+    padding: 5rem 0;
+}
+.post-image .single-post-title{
+    /*position: absolute;*/
+    z-index: 2;
+    left: 0;
+    right: 0;
+    top: 0;
+    color: var(--white);
+    padding: 5% 0;
+}
+.single-post .post-date{
+    /*position: absolute;*/
+    font-size: 1.8rem;
+    display: block;
+    bottom: 0;
+    padding: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    color: var(--white);
+}
+.post-image .post-date{
+    color: var(--white);
+}
+.post-header .post-date{
+    color: var(--greyish-brown);
+}
+.panel{
+    display: block;
+    padding: 1.5rem 6rem;
+    border-radius: 2.2rem;
+}
+.reg-panel{background-color: var(--green);}
+.panel p{
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--greyish-brown);
+    margin: 0;
+}
+.panel p a{
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+.panel{
+    margin-bottom: 2rem;
+}
+nav.breadcrumb-box{
+    background: transparent;
+    box-shadow: none;
+}
+.breadcrumb{
+    display: inline-block;
+}
+.breadcrumb,
+.breadcrumb:before{
+    color: var(--greyish);
+    font-weight: 300;
+    font-size: 1.8rem;
+    /*vertical-align: middle;*/
+}
+.breadcrumb:last-child{
+    color: var(--greyish-brown);
+}
+.breadcrumb i{
+    font-size: 2.2rem;
+    float: none;
+}
+.breadcrumb:hover{
+    text-decoration: underline;
+}
+
+
+
+

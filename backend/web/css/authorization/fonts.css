@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'pf_dintext_pro';
+    src: url('../fonts/pfd/pfdintextpro-bold-webfont.eot');
+    src: url('../fonts/pfd/pfdintextpro-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/pfd/pfdintextpro-bold-webfont.woff2') format('woff2'),
+         url('../fonts/pfd/pfdintextpro-bold-webfont.woff') format('woff'),
+         url('../fonts/pfd/pfdintextpro-bold-webfont.ttf') format('truetype'),
+         url('../fonts/pfd/pfdintextpro-bold-webfont.svg#pf_dintext_probold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ubuntu';
+    src: url('../fonts/ubuntu/ubuntu-regular-webfont.eot');
+    src: url('../fonts/ubuntu/ubuntu-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu/ubuntu-regular-webfont.woff2') format('woff2'),
+         url('../fonts/ubuntu/ubuntu-regular-webfont.woff') format('woff'),
+         url('../fonts/ubuntu/ubuntu-regular-webfont.ttf') format('truetype'),
+         url('../fonts/ubuntu/ubuntu-regular-webfont.svg#ubunturegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ubuntu';
+    src: url('../fonts/ubuntu/ubuntu-bold-webfont.eot');
+    src: url('../fonts/ubuntu/ubuntu-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu/ubuntu-bold-webfont.woff2') format('woff2'),
+         url('../fonts/ubuntu/ubuntu-bold-webfont.woff') format('woff'),
+         url('../fonts/ubuntu/ubuntu-bold-webfont.ttf') format('truetype'),
+         url('../fonts/ubuntu/ubuntu-bold-webfont.svg#ubuntubold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ubuntu';
+    src: url('../fonts/ubuntu/ubuntu-light-webfont.eot');
+    src: url('../fonts/ubuntu/ubuntu-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu/ubuntu-light-webfont.woff2') format('woff2'),
+         url('../fonts/ubuntu/ubuntu-light-webfont.woff') format('woff'),
+         url('../fonts/ubuntu/ubuntu-light-webfont.ttf') format('truetype'),
+         url('../fonts/ubuntu/ubuntu-light-webfont.svg#ubuntulight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ubuntu';
+    src: url('../fonts/ubuntu/ubuntu-medium-webfont.eot');
+    src: url('../fonts/ubuntu/ubuntu-medium-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu/ubuntu-medium-webfont.woff2') format('woff2'),
+         url('../fonts/ubuntu/ubuntu-medium-webfont.woff') format('woff'),
+         url('../fonts/ubuntu/ubuntu-medium-webfont.ttf') format('truetype'),
+         url('../fonts/ubuntu/ubuntu-medium-webfont.svg#ubuntumedium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}

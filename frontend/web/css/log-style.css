@@ -1,0 +1,343 @@
+body, html{
+    height: 100%;
+    position: relative;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+}
+html{
+    display: table;
+    margin: auto;
+    font-family: 'ubuntu', sans-serif;
+    font-weight: 400;
+    font-size: 8px;
+    color: var(--greyish-brown);
+    background: url("../img/log-bg.jpg") repeat;
+    position: relative;
+}
+/*.green{*/
+    /*background-color: #00ba65!important;*/
+    /*border-color: #00ba65!important;*/
+/*}*/
+.forms input{
+    padding-left: 10px;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--black);
+    transition: background-color 5000s ease-in-out 0s;
+}
+input:not([type]),
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=time],
+input[type=date],
+input[type=datetime],
+input[type=datetime-local],
+input[type=tel],
+input[type=number],
+input[type=search],
+textarea.materialize-textarea{
+    font-size: 1.8rem;
+}
+a,
+.btn {
+    -webkit-transition: all 0.125s ease-in-out 0s;
+    transition: all 0.125s ease-in-out 0s;
+}
+.input-field label:not(.label-icon).active,
+.input-field label.active{
+    font-size: 1.4rem;
+}
+
+a,button,input,textarea{
+    outline: none!important;
+}
+a{cursor: pointer;}
+.underline{
+    text-decoration: underline;
+}
+.underline:hover{
+    text-decoration: none;
+}
+.btn{
+    font-family: 'ubuntu', sans-serif;
+    text-transform: none;
+    font-size: 2rem;
+    border: 1px solid;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.3);
+    padding-left: 3rem;
+    padding-right: 3rem;
+    border-radius: 20px;
+    font-weight: 300;
+}
+.btn:hover,
+.btn:focus{
+    box-shadow: none;
+}
+.input-field label{
+    color: rgba(0,0,0,.67);
+    font-size: 1.8rem;
+    font-weight: 300;
+}
+.input-field input[type=text]:focus + label,
+.input-field input[type=email]:focus + label,
+.input-field input[type=password]:focus + label,
+.input-field textarea.materialize-textarea:focus + label{
+    color: var(--green);
+}
+input:not([type]):focus:not([readonly]),
+input[type=text]:focus:not([readonly]),
+input[type=password]:focus:not([readonly]),
+input[type=email]:focus:not([readonly]),
+input[type=url]:focus:not([readonly]),
+input[type=time]:focus:not([readonly]),
+input[type=date]:focus:not([readonly]),
+input[type=datetime]:focus:not([readonly]),
+input[type=datetime-local]:focus:not([readonly]),
+input[type=tel]:focus:not([readonly]),
+input[type=number]:focus:not([readonly]),
+input[type=search]:focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]){
+    border-bottom-color: var(--green);
+    box-shadow: 0 1px 0 0 var(--green);
+}
+.input-field .prefix{
+    font-size: 2.4rem;
+}
+.input-field .prefix.active {
+    color: var(--green);
+}
+button[type=submit]{
+    display: block;
+    margin: 0 auto;
+}
+.no-margin-bot{
+    margin-bottom: 0;
+}
+
+.logo {
+    position: absolute;
+    background: url("../img/logo-log.svg") no-repeat center #2A2D33;;
+    background-size: 80%;
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    border: 4px solid var(--green);
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+.forms-box:after{
+    position: absolute;
+    content: '';
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 45px;
+    border-bottom: 4px solid var(--green);
+    background-color: var(--dark-brown);
+    border-radius: 10px 10px 0 0;
+}
+.forms-box{
+    position: relative;
+    border-radius: 10px;
+    padding: 60px 2rem 2rem!important;
+    overflow: hidden;
+    background-color: rgba(255,255,255,.85);
+}
+.tabs{
+    overflow-x: hidden;
+    margin-bottom: 30px;
+    background-color: transparent;
+}
+.tabs .tab a,
+.tabs .tab a:hover{
+    color: var(--dark-brown);
+}
+.tabs .tab a.active{
+    color: var(--green);
+}
+.tabs .indicator{
+    background-color: var(--green);
+}
+
+.forms{
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+}
+.box{
+    position: absolute;
+    display: block;
+    top:50%;
+    left: 0;
+    right: 0;
+    margin: -160px auto 0;
+}
+@-webkit-keyframes ball-grid-pulse {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        opacity: 0.7;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes ball-grid-pulse {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+    50% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        opacity: 0.7;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+#tt-preloader {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 999999;
+    background: url("../img/log-bg.jpg")repeat ;
+}
+.loader-inner{
+    position: absolute;
+    display: block;
+    width: 90px;
+    height: 90px;
+    top: 50%;
+    left: 50%;
+    margin: -45px 0 0 -45px;
+
+    z-index: 9999;
+}
+.ball-grid-pulse {
+    width: 90px;
+}
+.ball-grid-pulse > div:nth-child(1) {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+    -webkit-animation-duration: 0.71s;
+    animation-duration: 0.71s;
+}
+.ball-grid-pulse > div:nth-child(2) {
+    -webkit-animation-delay: -0.13s;
+    animation-delay: -0.13s;
+    -webkit-animation-duration: 1.23s;
+    animation-duration: 1.23s;
+}
+.ball-grid-pulse > div:nth-child(3) {
+    -webkit-animation-delay: 0.53s;
+    animation-delay: 0.53s;
+    -webkit-animation-duration: 1.36s;
+    animation-duration: 1.36s;
+}
+.ball-grid-pulse > div:nth-child(4) {
+    -webkit-animation-delay: 0.38s;
+    animation-delay: 0.38s;
+    -webkit-animation-duration: 0.79s;
+    animation-duration: 0.79s;
+}
+.ball-grid-pulse > div:nth-child(5) {
+    -webkit-animation-delay: 0.45s;
+    animation-delay: 0.45s;
+    -webkit-animation-duration: 1.4s;
+    animation-duration: 1.4s;
+}
+.ball-grid-pulse > div:nth-child(6) {
+    -webkit-animation-delay: 0.46s;
+    animation-delay: 0.46s;
+    -webkit-animation-duration: 1.56s;
+    animation-duration: 1.56s;
+}
+.ball-grid-pulse > div:nth-child(7) {
+    -webkit-animation-delay: -0.07s;
+    animation-delay: -0.07s;
+    -webkit-animation-duration: 1.17s;
+    animation-duration: 1.17s;
+}
+.ball-grid-pulse > div:nth-child(8) {
+    -webkit-animation-delay: 0.31s;
+    animation-delay: 0.31s;
+    -webkit-animation-duration: 1.45s;
+    animation-duration: 1.45s;
+}
+.ball-grid-pulse > div:nth-child(9) {
+    -webkit-animation-delay: 0.15s;
+    animation-delay: 0.15s;
+    -webkit-animation-duration: 1.13s;
+    animation-duration: 1.13s;
+}
+.ball-grid-pulse > div {
+    background-color: var(--black);
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    margin: 2px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    display: inline-block;
+    float: left;
+    -webkit-animation-name: ball-grid-pulse;
+    animation-name: ball-grid-pulse;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+@media only screen and (max-width : 600px) {
+    .card-panel .input-field label{
+        font-size: 1.4rem;
+    }
+    .forms-box{
+        padding: 60px 2rem 2rem!important;
+    }
+}
+@media only screen and (min-width : 993px) {
+    html{
+        font-size: 8px;
+    }
+}
+@media only screen and (min-width : 1200px) {
+    html{
+        font-size: 10px;
+    }
+}
