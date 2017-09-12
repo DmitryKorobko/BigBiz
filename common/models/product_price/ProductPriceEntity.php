@@ -1,6 +1,7 @@
 <?php
 namespace common\models\product_price;
 
+use common\models\product\ProductEntity;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\db\ActiveRecord;
@@ -47,13 +48,29 @@ class ProductPriceEntity extends ActiveRecord
     public function rules()
     {
         return [
-            [['price'], 'double'],
-            [['product_id', 'count', 'price', 'price_usd'], 'safe'],
+            [['price', 'price_usd'], 'double'],
+            [['count', 'product_id'], 'integer'],
             [
-                ['price', 'price_usd'],
-                'validatePrice',
-                'skipOnError' => false,
-                'on'          => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE],
+                ['product_id'], 'exist',
+                'skipOnError'     => false,
+                'targetClass'     => ProductEntity::className(),
+                'targetAttribute' => ['product_id' => 'id'],
+            ],
+            [
+                'price', 'required', 'when' => function($model) {
+                    return $model->price_usd == '';
+                },
+                'whenClient' => 'function (attribute, value) {
+                    return $("#productpriceentity-0-price_usd").val() == ""; }',
+                'message' => 'По крайней мере одна цена должна быть заполнена!'
+            ],
+            [
+                'price_usd', 'required', 'when' => function($model) {
+                    return $model->price == '';
+                },
+                'whenClient' => 'function (attribute, value) {
+                    return $("#productpriceentity-0-price").val() == ""; }',
+                'message' => 'По крайней мере одна цена должна быть заполнена!'
             ],
         ];
     }
@@ -89,24 +106,5 @@ class ProductPriceEntity extends ActiveRecord
         unset($model, $formName, $post);
 
         return $models;
-    }
-
-    /**
-     * Price validator. Check for empty prices.
-     *
-     * @return bool
-     */
-    public function validatePrice(): bool
-    {
-        if ((Yii::$app->request->post()['ProductPriceEntity'][0]['price'] == '')
-            && (Yii::$app->request->post()['ProductPriceEntity'][0]['price_usd'] == '')) {
-            $this->addError('price',
-                Yii::t('app', 'По крайней мере одна цена должна быть заполнена!'));
-            $this->addError('price_usd',
-                Yii::t('app', 'По крайней мере одна цена должна быть заполнена!'));
-            return false;
-        }
-
-        return true;
     }
 }

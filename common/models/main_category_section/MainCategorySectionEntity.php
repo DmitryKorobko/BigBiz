@@ -2,7 +2,9 @@
 namespace common\models\main_category_section;
 
 use yii\{ behaviors\TimestampBehavior, data\ActiveDataProvider, db\ActiveRecord };
+use common\models\child_category_section\ChildCategorySectionEntity;
 use common\models\main_category_section\repositories\FrontendMainCategorySectionRepository;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class MainCategorySectionEntity
@@ -96,7 +98,12 @@ class MainCategorySectionEntity extends ActiveRecord
      */
     public function search($params): ActiveDataProvider
     {
-        $query = self::find()->orderBy(['sort' => SORT_ASC]);
+        $mainCatIds = ArrayHelper::getColumn(ChildCategorySectionEntity::find()->select('parent_category_id')->all(),
+            'parent_category_id');
+
+        $query = self::find()->where(['in', 'id', $mainCatIds])
+            ->orWhere(['not', ['category_type' => null]])
+            ->orderBy(['sort' => SORT_ASC]);
         $dataProvider = new ActiveDataProvider([
             'query'      => $query,
             'sort'       => false,

@@ -103,9 +103,12 @@ $gridColumns = [
         'buttons'       => [
             'view' => function ($url, $model) {
                 return Html::a(('<span class="glyphicon glyphicon-eye-open"></span>'),
-                    $url,
+                    '/../main/shop-profile/product?id='. $model->id,
                     [
-                        'title' => 'Перейти на карточку товара'
+                        'title'     => 'Перейти на карточку товара',
+                        'target'    => '_blank',
+                        'data-pjax' => '0'
+
                     ]);
             },
             'set-availability' => function ($url, $model) {
@@ -128,7 +131,7 @@ $gridColumns = [
 <div>
     <div class="form-group">
         <?= Html::a('Добавить товар', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Очистить фильтры', ['index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Очистить фильтры', ['index'], ['class' => 'btn btn-primary pull-right']) ?>
     </div>
 
     <?php Pjax::begin(); ?>

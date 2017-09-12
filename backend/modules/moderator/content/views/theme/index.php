@@ -99,7 +99,8 @@ $gridColumns = [
                 return Html::a(('<span class="glyphicon glyphicon-trash"></span>'),
                     $url,
                     [
-                        'title' => 'Удалить тему'
+                        'title' => 'Удалить тему',
+                        'data-confirm' => 'Вы уверены, что хотите удалить этот элемент?'
                     ]
                 );
             },

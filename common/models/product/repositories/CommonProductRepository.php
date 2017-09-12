@@ -21,7 +21,7 @@ trait CommonProductRepository
      * @param integer $productId Id of product
      * @return float
      */
-    public function getMinimalProductCountPrice($productId): float
+    public function getMinimalProductCountPrice($productId)
     {
         $minimalProductCount = ProductEntity::find()->select(['product.id', 'product_price.count as count',
             'product_price.price as price'])
@@ -72,7 +72,7 @@ trait CommonProductRepository
                     'description'    => strip_tags($product['description']),
                     'image'          => (!empty($product['image'])) ? $product['image']
                         : '/admin/images/default/no_image.png',
-                    'availability'   => (int) $product['availability'],
+                    'availability'   => (int) $product['availability'] ? true : false,
                     'is_favorite'    => $this->isFavoriteProductByUser($product['id'],
                         (!empty(Yii::$app->user->id)) ? Yii::$app->user->identity->getId()
                             : 'quest'),

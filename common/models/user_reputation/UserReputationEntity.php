@@ -2,7 +2,8 @@
 namespace common\models\user_reputation;
 
 use common\models\{
-    user\UserEntity, user_reputation\repositories\RestUserReputationRepository, user_profile\UserProfileEntity
+    user\UserEntity, user_reputation\repositories\RestUserReputationRepository, user_profile\UserProfileEntity,
+    answer\AnswerEntity
 };
 use Yii;
 use yii\{
@@ -99,6 +100,29 @@ class UserReputationEntity extends ActiveRecord
                 },
             ]
         ];
+    }
+
+    /**
+     * After saving user reputation, adding new answer
+     *
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->scenario == self::SCENARIO_CREATE) {
+            $answerModel = new AnswerEntity();
+            $data = [
+                'created_by'   => $this->created_by,
+                'recipient_id' => $this->recipient_id,
+                'type'         => AnswerEntity::TYPE_NEW_USER_REPUTATION,
+                'text'         => 'повысил вашу репутацию'
+            ];
+
+            $answerModel->addAnswer($data);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

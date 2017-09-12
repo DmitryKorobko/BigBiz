@@ -87,7 +87,8 @@ use kartik\rating\StarRating;
                         return Html::a(('<span class="glyphicon glyphicon-trash"></span>'),
                             $url,
                             [
-                                'title' => 'Удалить отзыв'
+                                'title' => 'Удалить отзыв',
+                                'data-confirm' => 'Вы уверены, что хотите удалить этот элемент?'
                             ]
                         );
                     }

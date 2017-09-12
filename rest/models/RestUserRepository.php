@@ -5,7 +5,7 @@ use common\models\{
     user_confidentiality\UserConfidentialityEntity, user_notifications_settings\UserNotificationsSettingsEntity,
     user_profile\UserProfileEntity, product\ProductEntity, theme\ThemeEntity,
     shop_notifications_settings\ShopNotificationsSettingsEntity, shop_confidentiality\ShopConfidentialityEntity,
-    shop_profile\ShopProfileEntity
+    shop_profile\ShopProfileEntity, user_product_favorite\UserProductFavoriteEntity, user_theme_favorite\UserThemeFavoriteEntity
 };
 use Yii;
 use rest\modules\api\v1\authorization\models\BlockToken;
@@ -346,10 +346,13 @@ trait RestUserRepository
         $themeModel = new ThemeEntity();
         /** @var  $productModel ProductEntity.php */
         $productModel = new ProductEntity();
+        $userId = Yii::$app->user->identity->getId();
 
         return [
-            'themes' => $themeModel->getFavoritesThemesByUser(5),
-            'products' => $productModel->getFavoritesProductsByUser(5)
+            'themes'         => $themeModel->getFavoritesThemesByUser(10),
+            'count_themes'   => (int) UserThemeFavoriteEntity::find()->where(['user_id' => $userId])->count(),
+            'products'       => $productModel->getFavoritesProductsByUser(10),
+            'count_products' => (int) UserProductFavoriteEntity::find()->where(['user_id' => $userId])->count()
         ];
     }
 }

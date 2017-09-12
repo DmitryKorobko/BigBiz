@@ -3,7 +3,7 @@ namespace common\models\product_feedback;
 
 use common\models\{
     product\ProductEntity, product_feedback\repositories\RestProductFeedbackRepository, user\UserEntity,
-    product_feedback\repositories\BackendProductFeedbackRepository,
+    product_feedback\repositories\BackendProductFeedbackRepository, answer\AnswerEntity,
     product_feedback\repositories\CommonProductFeedbackRepository
 };
 use Yii;
@@ -94,6 +94,29 @@ class ProductFeedbackEntity extends ActiveRecord
                 },
             ]
         ];
+    }
+
+    /**
+     * After saving product feedback adding new answer
+     *
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->scenario == self::SCENARIO_CREATE) {
+            $answerModel = new AnswerEntity();
+            $data = [
+                'created_by'   => Yii::$app->user->identity->getId(),
+                'product_id'   => $this->product_id,
+                'type'         => AnswerEntity::TYPE_NEW_PRODUCT_REPORT,
+                'text'         => 'оставил отзыв о вашем товаре'
+            ];
+
+            $answerModel->addAnswer($data);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

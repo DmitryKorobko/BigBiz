@@ -12,6 +12,7 @@ use yii\widgets\ActiveForm;
  * @var $product \common\models\product\ProductEntity
  * @var $city \common\models\city\CityEntity
  * @var $price \common\models\product_price\ProductPriceEntity
+ * @var $delivery \common\models\product_delivery\ProductDeliveryEntity
  * @var $form yii\widgets\ActiveForm
  */
 $userId = Yii::$app->user->identity->getId();
@@ -141,8 +142,6 @@ $userId = Yii::$app->user->identity->getId();
         ]
     ]);
     ?>
-
-    <?= $form->field($product, 'address')->input('text'); ?>
 
     <?= $form->field($product, 'sort')->input('number'); ?>
 

@@ -27,9 +27,12 @@ trait CommonShopFeedbackRepository
     public function getCountNewReviews(): int
     {
         return ShopFeedbackEntity::find()
+            ->leftJoin('user', 'user.id = shop_feedback.created_by')
             ->where([
-                'shop_id' => Yii::$app->user->identity->getId(),
-                'status'       => ShopFeedbackEntity::STATUS_UNREAD
+                'shop_feedback.shop_id' => Yii::$app->user->identity->getId(),
+                'shop_feedback.status'  => ShopFeedbackEntity::STATUS_UNREAD,
+                'user.status'           => UserEntity::STATUS_VERIFIED,
+                'user.is_deleted'       => 0
             ])
             ->count();
     }

@@ -22,7 +22,6 @@ use \cornernote\linkall\LinkAllBehavior;
  * @property string $description
  * @property string $availability
  * @property string $image
- * @property string $address
  * @property integer $user_id
  * @property integer $sort
  * @property integer $created_at
@@ -42,6 +41,9 @@ class ProductEntity extends ActiveRecord
     public $count_new_report;
     public $count_report;
     public $product_created_range;
+
+    private $image_max_size;
+    private $image_min_size;
 
     /**
      * Table name - Product.
@@ -65,7 +67,6 @@ class ProductEntity extends ActiveRecord
             'description'      => 'Описание',
             'availability'     => 'Доступен',
             'image'            => 'Изображения',
-            'address'          => 'Адрес доставки',
             'user_id'          => 'Автор',
             'sort'             => 'Сортировка',
             'towns'            => 'Города',
@@ -93,16 +94,29 @@ class ProductEntity extends ActiveRecord
                 'on' => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE]],
             [
                 ['image'],
-                'file',
-                'maxSize' => SettingsEntity::findOne(['key' => 'product_image_max_size'])->value * 1024
-                    ?? Yii::$app->params['product_image_max_size'],
-                'minSize' => SettingsEntity::findOne(['key' => 'product_image_min_size'])->value * 1024
-                    ?? Yii::$app->params['product_image_min_size'],
-                'on' => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE]
+                'image',
+                'maxSize'     => $this->image_max_size,
+                'minSize'     => $this->image_min_size,
+                'minWidth'    => SettingsEntity::findOne(['key' => 'product_image_min_width'])->value
+                    ?? Yii::$app->params['product_image_min_width'],
+                'minHeight'   => SettingsEntity::findOne(['key' => 'product_image_min_height'])->value
+                    ?? Yii::$app->params['product_image_min_height'],
+                'maxWidth'    => SettingsEntity::findOne(['key' => 'product_image_max_width'])->value
+                    ?? Yii::$app->params['product_image_max_width'],
+                'maxHeight'   => SettingsEntity::findOne(['key' => 'product_image_max_height'])->value
+                    ?? Yii::$app->params['product_image_max_height'],
+                'tooBig'      => 'Файл {file} слишком большой. Размер не должен превышать '
+                    . Yii::$app->formatter->asShortSize($this->image_max_size, 1),
+                'tooSmall'    => 'Файл {file} слишком маленький. Размер не должен быть меньше '
+                    . Yii::$app->formatter->asShortSize($this->image_min_size, 1),
+                'overWidth'   => 'Файл {file} слишком большой. Ширина не должна превышать {limit} пикселей.',
+                'underWidth'  => 'Файл {file} слишком маленький. Ширина не должна быть меньше {limit} пикселей.',
+                'overHeight'  => 'Файл {file} слишком большой. Высота не должна превышать {limit} пикселей.',
+                'underHeight' => 'Файл {file} слишком маленький. Высота не должна быть меньше {limit} пикселей.',
+                'on'          => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE]
             ],
             [['availability', 'name', 'description', 'created_at', 'updated_at', 'sort', 'product_created_range'], 'safe'],
-            ['description', 'string', 'min' => 100],
-            ['address', 'string']
+            ['description', 'string', 'min' => 20]
         ];
     }
 
@@ -111,6 +125,13 @@ class ProductEntity extends ActiveRecord
      */
     public function behaviors()
     {
+        $this->image_max_size = !empty(SettingsEntity::findOne(['key' => 'product_image_max_size'])->value)
+            ? SettingsEntity::findOne(['key' => 'product_image_max_size'])->value * 1024
+            : Yii::$app->params['product_image_max_size'];
+        $this->image_min_size = !empty(SettingsEntity::findOne(['key' => 'product_image_min_size'])->value)
+            ? SettingsEntity::findOne(['key' => 'product_image_min_size'])->value * 1024
+            : Yii::$app->params['product_image_min_size'];
+
         $userId = ((!empty(Yii::$app->user->id)) ? Yii::$app->user->identity->getId() : 'quest');
         return [
             [

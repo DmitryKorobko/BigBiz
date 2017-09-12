@@ -21,6 +21,7 @@ use common\models\feedback\repositories\BackendFeedbackRepository;
  * @property string  $cause_send
  * @property integer $created_at
  * @property integer $updated_at
+ * @property string $author_name
  */
 class Feedback extends ActiveRecord
 {
@@ -32,6 +33,8 @@ class Feedback extends ActiveRecord
 
     const STATUS_READ   = 'READ';
     const STATUS_UNREAD = 'UNREAD';
+
+    public $author_name;
 
     /**
      * @inheritdoc
@@ -72,7 +75,8 @@ class Feedback extends ActiveRecord
                 'in',
                 'range' => self::validateEnumAccessValues(),
                 'skipOnError' => false
-            ]
+            ],
+            ['author_name', 'safe']
         ];
     }
 

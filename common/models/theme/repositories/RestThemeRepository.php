@@ -1,12 +1,13 @@
 <?php
 namespace common\models\theme\repositories;
 
+use common\models\user_theme_favorite\UserThemeFavoriteEntity;
 use Yii;
 use rest\models\RestUser;
 use yii\data\ArrayDataProvider;
 use common\models\{
     theme\ThemeEntity, theme_user_like_show\ThemeUserLikeShowEntity, shop_profile\ShopProfileEntity,
-    user_profile\UserProfileEntity
+    user_profile\UserProfileEntity, settings\SettingsEntity
 };
 
 /**
@@ -111,6 +112,7 @@ trait RestThemeRepository
                 $likeThisTheme = ThemeUserLikeShowEntity::find()
                     ->where(['theme_id' => $theme['id'], 'user_id' => $userId])->asArray()->one();
                 $themeWithoutUserName = [
+                    'id'                  => (int) $theme['id'],
                     'name'                => $theme['name'],
                     'category_name'       => $theme['category_name'],
                     'view_count'          => (int) $theme['view_count'],
@@ -121,7 +123,8 @@ trait RestThemeRepository
                     'count_dislike'       => (int) ThemeUserLikeShowEntity::find()
                         ->where(['theme_id' => $theme['id'], 'like' => 0])->count(),
                     'is_like'             => (isset($likeThisTheme) && $likeThisTheme['like'] == 1) ? 1 : 0,
-                    'is_dislike'          => (isset($likeThisTheme) && $likeThisTheme['like'] == 0) ? 1 : 0
+                    'is_dislike'          => (isset($likeThisTheme) && $likeThisTheme['like'] == 0) ? 1 : 0,
+                    'is_favorite'         => $this->checkThemeFavorite($theme['id'])
                 ];
 
                 /**
@@ -155,7 +158,8 @@ trait RestThemeRepository
         $dataProvider = new ArrayDataProvider([
             'allModels'  => $themes,
             'pagination' => [
-                'pageSize' => 10
+                'pageSize' => Yii::$app->request->getQueryParam('per-page')
+                    ?? SettingsEntity::findOne(['key' => 'themesPerPage'])->value ?? Yii::$app->params['themesPerPage']
             ]
         ]);
 
@@ -280,6 +284,20 @@ trait RestThemeRepository
         $theme = ThemeEntity::findOne(['id' => $themeId]);
         $theme->view_count = ++$theme->view_count;
         $theme->save(false);
+    }
+
+    /** Method of checking the theme in favorites
+     *
+     * @param $id
+     * @return bool
+     */
+    public function checkThemeFavorite($id): bool
+    {
+        if (UserThemeFavoriteEntity::findOne(['theme_id' => $id])) {
+            return true;
+        }
+
+        return false;
     }
 
 }

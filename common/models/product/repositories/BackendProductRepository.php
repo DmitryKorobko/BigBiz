@@ -95,8 +95,8 @@ trait BackendProductRepository
             $insert[] = [
                 'product_id' => $this->id,
                 'count'      => $price->count,
-                'price'      => $price->price,
-                'price_usd'  => $price->price_usd
+                'price'      => !empty($price->price) ?? null,
+                'price_usd'  => !empty($price->price_usd) ?? null
             ];
         }
 

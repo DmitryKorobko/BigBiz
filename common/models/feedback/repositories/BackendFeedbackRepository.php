@@ -4,6 +4,8 @@ namespace common\models\feedback\repositories;
 use common\models\{
     feedback\Feedback, shop_profile\ShopProfileEntity, user_profile\UserProfileEntity, user\UserEntity
 };
+use yii\data\ActiveDataProvider;
+use Yii;
 
 /**
  * Class BackendFeedbackRepository
@@ -86,5 +88,55 @@ trait BackendFeedbackRepository
         }
 
         return $feedbacks;
+    }
+
+    /**
+     * Gets all data from table and returns dataProvider
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function getListReviews($params)
+    {
+        $query = Feedback::find()->select('feedback.*, user_profile.nickname as user_name, shop_profile.name as shop_name')
+            ->leftJoin('user_profile', 'user_profile.user_id = feedback.user_id')
+            ->leftJoin('shop_profile', 'shop_profile.user_id = feedback.user_id');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => $params['per-page'] ?? Yii::$app->params['reviewsPerPage']
+            ]
+        ]);
+
+        $this->load($params);
+
+        if (isset($params['Feedback'])) {
+            $query
+                ->andFilterWhere(['=', 'cause_send', $params['Feedback']['cause_send']])
+                ->andFilterWhere(['like', 'nickname', $this->author_name])
+                ->orFilterWhere(['like', 'shop_profile.name', $this->author_name])
+                ->andFilterWhere(['like', 'message', $params['Feedback']['message']]);
+        }
+
+        return $dataProvider;
+    }
+
+    /** Method of getting review authors name
+     *
+     * @param $authorId
+     * @return string
+     */
+    public function getReviewAuthorName($authorId): string
+    {
+        /** @var  $user UserProfileEntity */
+        $userProfile = UserProfileEntity::findOne(['user_id' => $authorId]);
+        if ($userProfile) {
+            return $userProfile->nickname;
+        }
+
+        return  ShopProfileEntity::findOne(['user_id' => $authorId])->name;
+
     }
 }

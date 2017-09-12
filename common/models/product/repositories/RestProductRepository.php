@@ -2,8 +2,9 @@
 namespace common\models\product\repositories;
 
 use common\models\{
-    product\ProductEntity, product_feedback\ProductFeedbackEntity
+    product\ProductEntity, product_feedback\ProductFeedbackEntity, settings\SettingsEntity
 };
+use common\models\user_product_favorite\UserProductFavoriteEntity;
 use Yii;
 use yii\{
     data\ArrayDataProvider, helpers\ArrayHelper, web\NotFoundHttpException
@@ -67,8 +68,9 @@ trait RestProductRepository
                         : '/admin/images/default/no_image.png',
                     'average_rating' => (int) $feedback->getAverageProductRating($product['id']),
                     'count_report'   => (int) $feedback->getProductFeedbackCount($product['id']),
-                    'availability'   => (int) ($product['availability'] == 1) ? 'Есть в наличии' : 'Нет в наличии',
-                    'price'          => (double) $product['price']
+                    'availability'   => (int) ($product['availability'] == 1) ? true : false,
+                    'price'          => (double) $product['price'],
+                    'is_favorite'    => $this->checkProductFavorite($product['id'])
                 ];
 
                 $products[] = $product;
@@ -82,7 +84,8 @@ trait RestProductRepository
         $dataProvider = new ArrayDataProvider([
             'allModels'  => $products,
             'pagination' => [
-                'pageSize' => 10
+                'pageSize' => Yii::$app->request->getQueryParam('per-page')
+                    ?? SettingsEntity::findOne(['key' => 'productsPerPage'])->value ?? Yii::$app->params['productsPerPage']
             ]
         ]);
 
@@ -141,4 +144,19 @@ trait RestProductRepository
             'cities' => $cities
         ]);
     }
+
+    /** Method of checking the product in favorites
+     *
+     * @param $id
+     * @return bool
+     */
+    public function checkProductFavorite($id): bool
+    {
+        if (UserProductFavoriteEntity::findOne(['product_id' => $id])) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

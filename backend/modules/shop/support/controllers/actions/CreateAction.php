@@ -5,6 +5,7 @@ use common\models\feedback\Feedback;
 use yii\base\Action;
 use yii\db\Exception;
 use yii\web\ErrorHandler;
+use Yii;
 
 /**
  * Class CreateAction
@@ -30,22 +31,22 @@ class CreateAction extends Action
     {
         $feedback = new Feedback();
 
-        if (\Yii::$app->request->post()) {
-            $postData = \Yii::$app->request->post();
+        if (Yii::$app->request->post()) {
+            $postData = Yii::$app->request->post();
             $postData['Feedback']['user_id'] = \Yii::$app->user->identity->getId();
 
             if ($feedback->load($postData) && $feedback->validate()) {
-                $transaction = \Yii::$app->db->beginTransaction();
+                $transaction = Yii::$app->db->beginTransaction();
                 try {
                     if ($feedback->save()) {
                         $transaction->commit();
-                        \Yii::$app->getSession()->setFlash('success', 'Сообщение отправлено успешно!');
+                        Yii::$app->getSession()->setFlash('success', 'Сообщение отправлено успешно!');
                         return $this->controller->redirect('/admin/shop/support/send-message');
                     }
                 } catch (Exception $e) {
                     $transaction->rollback();
-                    \Yii::error(ErrorHandler::convertExceptionToString($e));
-                    \Yii::$app->getSession()->setFlash('error',
+                    Yii::error(ErrorHandler::convertExceptionToString($e));
+                    Yii::$app->getSession()->setFlash('error',
                         'Произошла ошибка при отправлении сообщения! Попробуйте еще раз!');
                     return $this->controller->redirect('/admin/shop/support/send-message');
                 }

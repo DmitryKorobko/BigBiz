@@ -104,19 +104,91 @@ trait RestCommentRepository
      */
     public function getCreatedCommentDetail($id): array
     {
-        /** @var  $comment CommentEntity*/
-        $comment = self::findOne($id);
-        $commentImages = $comment->getImages()->select(['comment_image.id', 'comment_image.src'])->all();
+        /** @var  $commentLikeModel CommentLikeEntity.php */
+        $commentLikeModel = new CommentLikeEntity();
 
-        $result = $comment->getAttributes();
-        foreach ($commentImages as $commentImage) {
-            $result['images'][] = [
-                'id'  => $commentImage['id'],
-                'src' => $commentImage['src']
+        $comment = [];
+
+        /** @var  $model CommentEntity*/
+        $model = CommentEntity::find()
+            ->select([
+                'comment.id',
+                'comment.text',
+                'comment.recipient_id',
+                'comment.created_by',
+                'comment.created_at',
+                'comment.status',
+                'user.status_online as user_status_online'
+            ])
+            ->leftJoin('user', 'comment.created_by = user.id')
+            ->where(['comment.id' => $id])
+            ->asArray()
+            ->one();
+
+        $model['count_like'] = $commentLikeModel->getCountCommentLike($model['id']);
+        $model['liked'] = $commentLikeModel->isLikedCommentByUser($model['id']);
+        $model['images'] = CommentImageEntity::find()
+            ->select('src')
+            ->where(['comment_id' => $model['id']])
+            ->asArray()
+            ->all();
+
+        /** Get information about author of comment */
+        $authorShop = ShopProfileEntity::findOne(['user_id' => $model['created_by']]);
+        $authorUser = UserProfileEntity::findOne(['user_id' => $model['created_by']]);
+        if ($authorShop) {
+            $author = [
+                'id'            => $model['created_by'],
+                'name'          => $authorShop->name,
+                'avatar'        => $authorShop->image,
+                'status_online' => $model['user_status_online']
+            ];
+        } elseif ($authorUser) {
+            $author = [
+                'id'            => $model['created_by'],
+                'name'          => $authorUser->nickname,
+                'avatar'        => $authorUser->avatar,
+                'status_online' => $model['user_status_online']
+            ];
+        } else {
+            $author = [
+                'name'          => 'Администрация',
+                'avatar'        => (new AdminContactEntity())->getCurrentImage($model['created_by']),
+                'status_online' => $model['user_status_online']
             ];
         }
 
-        return $result;
+        if ($model['recipient_id']) {
+            /** Get information about recipient of comment */
+            $recipientShop = ShopProfileEntity::findOne(['user_id' => $model['recipient_id']]);
+            $recipientUser = UserProfileEntity::findOne(['user_id' => $model['recipient_id']]);
+            if ($recipientShop) {
+                $recipient = [
+                    'id'   => $recipientShop->user_id,
+                    'name' => $recipientShop->name
+                ];
+            } elseif($recipientUser) {
+                $recipient = [
+                    'id'   => $recipientUser->user_id,
+                    'name' => $recipientUser->nickname
+                ];
+            } else {
+                $recipient = [
+                    'name' => 'Администрация'
+                ];
+            }
+        } else {
+            $recipient = null;
+        }
+        unset($model['recipient_id'], $model['created_by']);
+
+        $comment[] = [
+            'recipient' => $recipient,
+            'author'    => $author,
+            'comment'   => $model
+        ];
+
+        return $comment;
     }
 
     /**
@@ -138,10 +210,12 @@ trait RestCommentRepository
                 'comment.recipient_id',
                 'comment.created_by',
                 'comment.created_at',
-                'comment.status'
+                'comment.status',
+                'user.status_online as user_status_online'
             ])
             ->where(['theme_id' => $themeId])
-            ->orderBy(['comment.created_at' => SORT_DESC])
+            ->leftJoin('user', 'comment.created_by = user.id')
+            ->orderBy(['comment.created_at' => SORT_ASC])
             ->asArray()
             ->all();
 
@@ -163,58 +237,60 @@ trait RestCommentRepository
                         'id'            => $model['created_by'],
                         'name'          => $authorShop->name,
                         'avatar'        => $authorShop->image,
-                        'status_online' => $model['status']
+                        'status_online' => $model['user_status_online']
                     ];
                 } elseif ($authorUser) {
                     $author = [
                         'id'            => $model['created_by'],
                         'name'          => $authorUser->nickname,
                         'avatar'        => $authorUser->avatar,
-                        'status_online' => $model['status']
+                        'status_online' => $model['user_status_online']
                     ];
                 } else {
                     $author = [
                         'name'          => 'Администрация',
                         'avatar'        => (new AdminContactEntity())->getCurrentImage($model['created_by']),
-                        'status_online' => $model['status']
+                        'status_online' => $model['user_status_online']
                     ];
                 }
 
-                $recipient = [];
                 if ($model['recipient_id']) {
                     /** Get information about recipient of comment */
                     $recipientShop = ShopProfileEntity::findOne(['user_id' => $model['recipient_id']]);
+                    $recipientUser = UserProfileEntity::findOne(['user_id' => $model['recipient_id']]);
                     if ($recipientShop) {
                         $recipient = [
-                            'id'   => $recipientShop->id,
+                            'id'   => $recipientShop->user_id,
                             'name' => $recipientShop->name
                         ];
-                    } else {
-                        $recipientUser = UserProfileEntity::findOne(['user_id' => $model['recipient_id']]);
+                    } elseif ($recipientUser) {
                         $recipient = [
-                            'id'   => $recipientUser->id,
+                            'id'   => $recipientUser->user_id,
                             'name' => $recipientUser->nickname
+                        ];
+                    } else {
+                        $recipient = [
+                            'name' => 'Администрация'
                         ];
                     }
                 } else {
-                    $recipient = [
-                        'name' => 'Администрация'
-                    ];
+                    $recipient = null;
                 }
-                unset($model['recipient_id'], $model['created_by']);
+                unset($model['recipient_id'], $model['created_by'], $model['user_status_online']);
 
                 $comments[] = [
                     'recipient' => $recipient,
                     'author'    => $author,
                     'comment'   => $model
                 ];
+
             }
         }
 
         $dataProvider = new ArrayDataProvider([
             'allModels'  => $comments,
             'pagination' => [
-                'pageSize' => 10
+                'pageSize' => Yii::$app->request->queryParams['per-page'] ?? 10
             ]
         ]);
 

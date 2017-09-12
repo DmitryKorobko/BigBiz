@@ -3,6 +3,8 @@ namespace common\models\child_category_section;
 
 use yii\{ behaviors\TimestampBehavior, data\ActiveDataProvider, db\ActiveRecord };
 use common\models\child_category_section\repositories\FrontendChildCategorySectionRepository;
+use common\models\theme\ThemeEntity;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class ChildCategorySectionEntity
@@ -127,8 +129,11 @@ class ChildCategorySectionEntity extends ActiveRecord
      */
     public function getListChildCategories($params): ActiveDataProvider
     {
+        $childCatIds = ArrayHelper::getColumn(ThemeEntity::find()->select('category_id')->all(), 'category_id');
+
         $query = self::find()->select(['id', 'name', 'description', 'sort'])
-            ->where(['parent_category_id' => $params['parent_id']]);
+            ->where(['parent_category_id' => $params['parent_id']])
+            ->andWhere(['in', 'id', $childCatIds]);
         if (isset($params['user_category'])) {
             $query->andWhere(['permissions_only_admin' => 0]);
         }

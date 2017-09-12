@@ -62,7 +62,8 @@ use kartik\daterange\DateRangePicker;
                         return \yii\helpers\Html::a(('<span class="glyphicon glyphicon-trash"></span>'),
                             $url,
                             [
-                                'title' => 'Удалить комментарий'
+                                'title' => 'Удалить комментарий',
+                                'data-confirm' => 'Вы уверены, что хотите удалить этот элемент?'
                             ]
                         );
                     }

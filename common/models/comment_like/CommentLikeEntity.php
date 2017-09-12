@@ -60,6 +60,30 @@ class CommentLikeEntity extends ActiveRecord
     }
 
     /**
+     * After saving like of comment, adding new answer
+     *
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->scenario == self::SCENARIO_CREATE) {
+            $answerModel = new AnswerEntity();
+            $data = [
+                'created_by'   => Yii::$app->user->identity->getId(),
+                'recipient_id' => $this->user_id,
+                'theme_id'     => $this->comment_id,
+                'type'         => AnswerEntity::TYPE_LIKE_COMMENT,
+                'text'         => 'оценил ваш комментарий'
+            ];
+
+            $answerModel->addAnswer($data);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
      * Method of validation post data
      *
      * @param $modelErrors

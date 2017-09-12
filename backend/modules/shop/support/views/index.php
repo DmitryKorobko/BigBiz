@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use \xvs32x\tinymce\Tinymce;
+use kartik\select2\Select2;
+use common\models\feedback\Feedback;
 
 /* @var $this yii\web\View */
 /* @var $feedback \common\models\feedback\Feedback.php */
@@ -18,6 +20,17 @@ $userId = Yii::$app->user->identity->getId();
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($feedback, 'name')->input('text'); ?>
+
+    <?= $form->field($feedback, 'cause_send')->widget(Select2::className(), [
+        'data'          => [
+            Feedback::APPLICATION_PROBLEM => 'Ошибка работы приложения',
+            Feedback::FUNCTIONAL_PROBLEM  => 'Недостаточная функциональность',
+            Feedback::WISHES              => 'Другая проблема или пожелание'
+        ],
+        'maintainOrder' => true,
+        'options'       => ['placeholder' => 'Выберите причину отправки ...', 'multiple' => false],
+        'pluginOptions' => ['allowClear' => false]
+    ]); ?>
 
     <?=
         $form->field($feedback, 'message')->widget(Tinymce::className(), [

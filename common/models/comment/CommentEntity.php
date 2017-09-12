@@ -88,6 +88,12 @@ class CommentEntity extends ActiveRecord
                 'targetClass'     => UserEntity::className(),
                 'targetAttribute' => ['created_by' => 'id'],
             ],
+            [
+                ['recipient_id'], 'exist',
+                'skipOnError'     => false,
+                'targetClass'     => UserEntity::className(),
+                'targetAttribute' => ['recipient_id' => 'id'],
+            ],
         ];
     }
 
@@ -143,6 +149,30 @@ class CommentEntity extends ActiveRecord
         }
 
         return false;
+    }
+
+    /**
+     * After saving comment for theme, adding new answer
+     *
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->scenario == self::SCENARIO_CREATE && !empty($this->recipient_id)) {
+            $answerModel = new AnswerEntity();
+            $data = [
+                'created_by'   => Yii::$app->user->identity->getId(),
+                'recipient_id' => $this->recipient_id,
+                'theme_id'     => $this->theme_id,
+                'type'         => AnswerEntity::TYPE_NEW_THEME_COMMENT,
+                'text'         => 'оставил комментарий к вашей теме'
+            ];
+
+            $answerModel->addAnswer($data);
+        }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**

@@ -85,32 +85,6 @@ $this->title = 'Admin Panel';
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h1><i class="fa fa-comments-o fa-5" style="color: #0a0a0a; margin-left: 47%;"></i></h1>
-                        <h4 style="text-align: center">Кол-во комментариев в темах:<?= ' ' . $count_comments; ?></h4>
-                    </div>
-                        <a href="#" class="small-box-footer">
-                        Подробнее <i class="fa fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-6 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h1><i class="fa fa-group fa-5" style="color: #0a0a0a; margin-left: 47%;"></i></h1>
-                        <h4 style="text-align: center">Кол-во репортов о таварах:<?= ' ' . $count_product_feedback; ?>
-                        </h4>
-                    </div>
-                    <a href="#" class="small-box-footer">
-                        Подробнее <i class="fa fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-
 
 <!--            <div class="col-lg-6 col-xs-6">-->
 <!--                <!-- small box -->

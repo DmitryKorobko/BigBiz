@@ -6,7 +6,9 @@ use Yii;
 use yii\{
     base\Action, widgets\ActiveForm
 };
-use common\models\admin_contact\AdminContactEntity;
+use common\models\{
+    admin_contact\AdminContactEntity, feedback\Feedback, theme\ThemeEntity
+};
 
 /**
  * Class IndexAction
@@ -35,6 +37,12 @@ class IndexAction extends Action
     {
         /* @var $user BackendUserEntity */
         $user = BackendUserEntity::findIdentity(@Yii::$app->user->id);
+        
+        /** @var  $theme ThemeEntity */
+        $theme = new ThemeEntity();
+
+        /** @var  $review Feedback */
+        $review = new Feedback();
 
         /* @var $modelProfile AdminContactEntity */
         $modelProfile = AdminContactEntity::getProfile();
@@ -52,8 +60,12 @@ class IndexAction extends Action
         }
 
         return $this->controller->render($this->view, [
-            'modelProfile'         => $modelProfile,
-            'user'                 => $user
+            'modelProfile'   => $modelProfile,
+            'user'           => $user,
+            'theme'          => $theme,
+            'themeProvider'  => $theme->search(Yii::$app->request->queryParams, true),
+            'review'         => $review,
+            'reviewProvider' => $review->getListReviews(Yii::$app->request->queryParams)
         ]);
     }
 }

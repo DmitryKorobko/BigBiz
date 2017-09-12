@@ -29,15 +29,15 @@ class DeleteShopFeedbackAction extends Action
     {
         /** @var $shopFeedback ShopFeedbackEntity.php */
         $shopFeedback = ShopFeedbackEntity::findOne(['id' => $id]);
-        $userId = $shopFeedback->created_by;
+        $shopId = $shopFeedback->shop_id;
         try {
             $shopFeedback->delete();
             Yii::$app->getSession()->setFlash('success', "Отзыв о магазине удален успешно!");
-            return $this->controller->redirect('view?id=' . $userId);
+            return $this->controller->redirect('view?id=' . $shopId);
         } catch (\Exception $e) {
             Yii::error(ErrorHandler::convertExceptionToString($e));
             Yii::$app->getSession()->setFlash('error', "Произошла ошибка при удалении отзывы о магазине! Смотреть логи!");
-            return $this->controller->redirect('view?id=' . $userId);
+            return $this->controller->redirect('view?id=' . $shopId);
         }
     }
 }

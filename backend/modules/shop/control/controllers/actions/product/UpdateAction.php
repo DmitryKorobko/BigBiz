@@ -1,9 +1,9 @@
 <?php
 namespace backend\modules\shop\control\controllers\actions\product;
 
-use common\models\city\CityEntity;
-use common\models\product\ProductEntity;
-use common\models\product_price\ProductPriceEntity;
+use common\models\{
+    city\CityEntity, product\ProductEntity, product_price\ProductPriceEntity
+};
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
@@ -88,9 +88,9 @@ class UpdateAction extends Action
         }
 
         return $this->controller->render($this->view, [
-            'product' => $modelProduct,
-            'city'    => $modelCity,
-            'price'   => (empty($modelPrice)) ? [new ProductPriceEntity] : $modelPrice
+            'product'  => $modelProduct,
+            'city'     => $modelCity,
+            'price'    => (empty($modelPrice)) ? [new ProductPriceEntity] : $modelPrice
         ]);
     }
 }

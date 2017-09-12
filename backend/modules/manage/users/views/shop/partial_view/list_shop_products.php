@@ -89,7 +89,8 @@ use kartik\daterange\DateRangePicker;
                         return Html::a(('<span class="glyphicon glyphicon-trash"></span>'),
                             $url,
                             [
-                                'title' => 'Удалить продукт'
+                                'title' => 'Удалить продукт',
+                                'data-confirm' => 'Вы уверены, что хотите удалить этот элемент?'
                             ]
                         );
                     },

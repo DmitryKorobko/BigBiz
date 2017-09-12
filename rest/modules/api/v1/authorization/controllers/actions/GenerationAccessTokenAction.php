@@ -91,7 +91,7 @@ class GenerationAccessTokenAction extends Action
                     'user' => [
                         'id' => $user->getId(),
                         'email' => $user->email,
-                        'role' => $user->role,
+                        'role' => $user->getUserRole($user->id),
                         'status' => $user->getCurrentStatus($user->status),
                         'created_at' => $user->created_at
                     ]

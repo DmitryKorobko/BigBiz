@@ -52,6 +52,9 @@ class ThemeEntity extends ActiveRecord
     public $theme_created_range;
     public $user_name;
 
+    private $image_max_size;
+    private $image_min_size;
+
     /**
      * @inheritdoc
      */
@@ -98,12 +101,26 @@ class ThemeEntity extends ActiveRecord
             [['user_id'], 'default', 'value' => Yii::$app->user->id],
             [
                 ['image'],
-                'file',
-                'maxSize' => SettingsEntity::findOne(['key' => 'theme_image_max_size'])->value * 1024
-                    ?? Yii::$app->params['theme_image_max_size'],
-                'minSize' => SettingsEntity::findOne(['key' => 'theme_image_min_size'])->value * 1024
-                    ?? Yii::$app->params['theme_image_min_size'],
-                'on' => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE]
+                'image',
+                'maxSize'     => $this->image_max_size,
+                'minSize'     => $this->image_min_size,
+                'minWidth'    => SettingsEntity::findOne(['key' => 'theme_image_min_width'])->value
+                    ?? Yii::$app->params['theme_image_min_width'],
+                'minHeight'   => SettingsEntity::findOne(['key' => 'theme_image_min_height'])->value
+                    ?? Yii::$app->params['theme_image_min_height'],
+                'maxWidth'    => SettingsEntity::findOne(['key' => 'theme_image_max_width'])->value
+                    ?? Yii::$app->params['theme_image_max_width'],
+                'maxHeight'   => SettingsEntity::findOne(['key' => 'theme_image_max_height'])->value
+                    ?? Yii::$app->params['theme_image_max_height'],
+                'tooBig'      => 'Файл {file} слишком большой. Размер не должен превышать '
+                    . Yii::$app->formatter->asShortSize($this->image_max_size, 1),
+                'tooSmall'    => 'Файл {file} слишком маленький. Размер не должен быть меньше '
+                    . Yii::$app->formatter->asShortSize($this->image_min_size, 1),
+                'overWidth'   => 'Файл {file} слишком большой. Ширина не должна превышать {limit} пикселей.',
+                'underWidth'  => 'Файл {file} слишком маленький. Ширина не должна быть меньше {limit} пикселей.',
+                'overHeight'  => 'Файл {file} слишком большой. Высота не должна превышать {limit} пикселей.',
+                'underHeight' => 'Файл {file} слишком маленький. Высота не должна быть меньше {limit} пикселей.',
+                'on'          => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE]
             ],
             [
                 [
@@ -120,6 +137,13 @@ class ThemeEntity extends ActiveRecord
      */
     public function behaviors(): array
     {
+        $this->image_max_size = !empty(SettingsEntity::findOne(['key' => 'theme_image_max_size'])->value)
+            ? SettingsEntity::findOne(['key' => 'theme_image_max_size'])->value * 1024
+            : Yii::$app->params['theme_image_max_size'];
+        $this->image_min_size = !empty(SettingsEntity::findOne(['key' => 'theme_image_min_size'])->value * 1024)
+            ? SettingsEntity::findOne(['key' => 'theme_image_min_size'])->value * 1024
+            : Yii::$app->params['theme_image_min_size'];
+
         $userId = ((!empty(Yii::$app->user->id)) ? Yii::$app->user->identity->getId() : 'quest');
         return [
             [

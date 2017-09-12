@@ -49,7 +49,7 @@ trait BackendThemeRepository
             $dataProvider = new ActiveDataProvider([
                 'query' => $query,
                 'pagination' => [
-                    'pageSize' => isset($params['limit']) ? $params['limit'] : 10
+                    'pageSize' => $params['per-page'] ?? Yii::$app->params['themesPerPage']
                 ]
             ]);
         }
@@ -74,10 +74,6 @@ trait BackendThemeRepository
         ]);
 
         $this->load($params);
-
-        if (!$this->validate()) {
-            return $dataProvider;
-        }
 
         if (isset($params['ThemeEntity'])) {
             $query

@@ -28,6 +28,9 @@ class MobileBannerEntity extends ActiveRecord
     const IMAGE_MIN = 'mobile_banner_min_size';
     const PRICE     = 'mobile_banner_price';
 
+    private $image_max_size;
+    private $image_min_size;
+
     /** @var  $period_of_time */
     public $period_of_time;
 
@@ -81,12 +84,26 @@ class MobileBannerEntity extends ActiveRecord
             [['image'], 'file', 'skipOnEmpty' => true, 'on' => [self::SCENARIO_UPDATE]],
             [
                 'image',
-                'file',
-                'maxSize' => SettingsEntity::findOne(['key' => 'mobile_banner_max_size'])->value * 1024
-                    ?? Yii::$app->params['mobile_banner_max_size'],
-                'minSize' => SettingsEntity::findOne(['key' => 'mobile_banner_min_size'])->value * 1024
-                    ?? Yii::$app->params['mobile_banner_min_size'],
-                'on' => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE]
+                'image',
+                'maxSize'     => $this->image_max_size,
+                'minSize'     => $this->image_min_size,
+                'minWidth'    => SettingsEntity::findOne(['key' => 'mobile_banner_min_width'])->value
+                    ?? Yii::$app->params['mobile_banner_min_width'],
+                'minHeight'   => SettingsEntity::findOne(['key' => 'mobile_banner_min_height'])->value
+                    ?? Yii::$app->params['mobile_banner_min_height'],
+                'maxWidth'    => SettingsEntity::findOne(['key' => 'mobile_banner_max_width'])->value
+                    ?? Yii::$app->params['mobile_banner_max_width'],
+                'maxHeight'   => SettingsEntity::findOne(['key' => 'mobile_banner_max_height'])->value
+                    ?? Yii::$app->params['mobile_banner_max_height'],
+                'tooBig'      => 'Файл {file} слишком большой. Размер не должен превышать '
+                    . Yii::$app->formatter->asShortSize($this->image_max_size, 1),
+                'tooSmall'    => 'Файл {file} слишком маленький. Размер не должен быть меньше '
+                    . Yii::$app->formatter->asShortSize($this->image_min_size, 1),
+                'overWidth'   => 'Файл {file} слишком большой. Ширина не должна превышать {limit} пикселей.',
+                'underWidth'  => 'Файл {file} слишком маленький. Ширина не должна быть меньше {limit} пикселей.',
+                'overHeight'  => 'Файл {file} слишком большой. Высота не должна превышать {limit} пикселей.',
+                'underHeight' => 'Файл {file} слишком маленький. Высота не должна быть меньше {limit} пикселей.',
+                'on'          => [self::SCENARIO_CREATE, self::SCENARIO_UPDATE]
             ],
             [['created_at', 'updated_at', 'user_id'], 'safe']
         ];
@@ -115,6 +132,13 @@ class MobileBannerEntity extends ActiveRecord
      */
     public function behaviors(): array
     {
+        $this->image_max_size = !empty(SettingsEntity::findOne(['key' => 'mobile_banner_max_size'])->value)
+            ? SettingsEntity::findOne(['key' => 'mobile_banner_max_size'])->value * 1024
+            : Yii::$app->params['mobile_banner_max_size'];
+        $this->image_min_size = !empty(SettingsEntity::findOne(['key' => 'mobile_banner_min_size'])->value)
+            ? SettingsEntity::findOne(['key' => 'mobile_banner_min_size'])->value * 1024
+            : Yii::$app->params['mobile_banner_min_size'];
+
         $userId = ((!empty(Yii::$app->user->id)) ? Yii::$app->user->identity->getId() : 'quest');
         return [
             [
@@ -195,7 +219,8 @@ class MobileBannerEntity extends ActiveRecord
             ->where(['status' => 1])
             ->andWhere(['>', 'end_date', time()])
             ->andWhere(['<', 'start_date', time()])
-            ->orderBy(new Expression('rand()'))
             ->all();
     }
+
+
 }

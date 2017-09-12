@@ -2,11 +2,11 @@
 
 namespace common\models\product_like;
 
-use yii\db\ActiveRecord;
-use yii\behaviors\TimestampBehavior;
+use yii\{
+    db\ActiveRecord, behaviors\TimestampBehavior, web\NotFoundHttpException
+};
 use common\models\product\ProductEntity;
 use Yii;
-use yii\web\NotFoundHttpException;
 
 /**
  * Class ProductLikeEntity

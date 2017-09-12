@@ -1,9 +1,9 @@
 <?php
 namespace backend\modules\shop\control\controllers\actions\product;
 
-use common\models\city\CityEntity;
-use common\models\product\ProductEntity;
-use common\models\product_price\ProductPriceEntity;
+use common\models\{
+    city\CityEntity, product\ProductEntity, product_price\ProductPriceEntity
+};
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
@@ -66,7 +66,7 @@ class CreateAction extends Action
                     Yii::$app->getSession()->setFlash('success', "Товар {$modelProduct->name} добавлен успешно!");
                     return $this->controller->redirect('index');
                 }
-            } catch (Exception $e) {
+            } catch (Exception $e) { return $e->getMessage();
                 $transaction->rollback();
                 Yii::$app->getSession()->setFlash('error',
                     "Произошла ошибка при добавлении товара - {$modelProduct->name} !");
@@ -75,9 +75,9 @@ class CreateAction extends Action
         }
 
         return $this->controller->render($this->view, [
-            'product' => $modelProduct,
-            'city'    => $modelCity,
-            'price'   => (empty($modelPrice)) ? [new ProductPriceEntity] : $modelPrice
+            'product'  => $modelProduct,
+            'city'     => $modelCity,
+            'price'    => (empty($modelPrice)) ? [new ProductPriceEntity] : $modelPrice
         ]);
     }
 }

@@ -11,8 +11,8 @@ $this->params['breadcrumbs'][] = 'Обновить продукт';
 ?>
 <div class="personal-info-update">
     <?= $this->render('_form', [
-        'product' => $product,
-        'city'    => $city,
-        'price'   => $price
+        'product'  => $product,
+        'city'     => $city,
+        'price'    => $price
     ]); ?>
 </div>

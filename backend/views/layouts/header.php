@@ -169,7 +169,7 @@ AppAsset::register($this);
                                     <?php } ?>
                                 </ul>
                             </li>
-                            <li class="footer"><a href="#">Просмотреть все</a></li>
+                            <li class="footer"><a href="/admin/manage/profile/manage-profile">Просмотреть все</a></li>
                         </ul>
                     </li>
                     <li class="dropdown messages-menu">
@@ -202,7 +202,7 @@ AppAsset::register($this);
                                     <?php } ?>
                                 </ul>
                             </li>
-                            <li class="footer"><a href="/admin/shop/profile/shop-profile">Просмотреть все темы</a></li>
+                            <li class="footer"><a href="/admin/manage/profile/manage-profile">Просмотреть все темы</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
@@ -287,6 +287,7 @@ AppAsset::register($this);
                                            class="btn btn-default btn-flat">Мой профиль</a>
                                         <a href="<?= Url::to(['/../main/shop-profile?id=' .
                                             @Yii::$app->user->identity->getId()]) ?>"
+                                           target="_blank"
                                            class="btn btn-default btn-flat">Форум</a>
                                     </div>
                                 <?php elseif (Yii::$app->user->can('admin')): ?>

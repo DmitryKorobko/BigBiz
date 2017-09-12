@@ -107,10 +107,24 @@ Yii::$app->formatter->locale = 'ru-RU';
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="<?= Url::to(['/shop/control/product']) ?>">
-                        <i class="fa fa fa-product-hunt fa-fw"></i> <span>Товары</span>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa fa-product-hunt fa-fw"></i>
+                        <span>Товары</span>
+                        <i class="fa fa-angle-left pull-right"></i>
                     </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="<?= Url::to(['/shop/control/product']) ?>">
+                                <i class="fa fa fa-clone fa-fw"></i> <span>Список товаров</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= Url::to(['/shop/control/delivery']) ?>">
+                                <i class="fa fa fa fa-truck fa-fw"></i> <span>Адреса  товаров</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="<?= Url::to(['/shop/control/theme']) ?>">
@@ -212,7 +226,7 @@ Yii::$app->formatter->locale = 'ru-RU';
                 </li>
             <?php endif ?>
         </ul>
-        <ul class="sidebar-menu nav">
+        <ul class="sidebar-menu">
             <li class="treeview">
                 <?php if ((Yii::$app->user->can('admin')) ||
                 (Yii::$app->user->can('shop'))) : ?>

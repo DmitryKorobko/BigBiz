@@ -11,6 +11,7 @@ use kartik\daterange\DateRangePicker;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $models backend\modules\shop\control\controllers\ThemeController */
+/* @var $searchModel ThemeEntity */
 
 $this->title = "Список тем";
 
@@ -99,7 +100,9 @@ $gridColumns = [
     ],
     [
         'attribute' => 'created_at',
-        'format'    => ['date', 'Y-MM-d H:i:s'],
+        'value'     => function ($model) {
+            return Yii::$app->formatter->asDatetime($model->created_at);
+        },
         'filter'    => DateRangePicker::widget([
             'model'          => $searchModel,
             'attribute'      => 'theme_created_range',
@@ -108,7 +111,7 @@ $gridColumns = [
                 'timePicker' => true,
                 'timePickerIncrement' => 30,
                 'locale' => [
-                    'format' => 'Y-m-d h:i',
+                    'format' => 'Y-MM-d H:i:s',
                 ]
             ]
         ])
@@ -119,9 +122,11 @@ $gridColumns = [
         'buttons'       => [
             'view' => function ($url, $model) {
                 return Html::a(('<span class="glyphicon glyphicon-eye-open"></span>'),
-                    $url,
+                    '/../main/shop-profile/theme?id='. $model->id,
                     [
-                        'title' => 'Предпросмотр темы'
+                        'title'     => 'Предпросмотр темы',
+                        'target'    => '_blank',
+                        'data-pjax' => '0'
                     ]);
             }
         ],
@@ -135,7 +140,7 @@ $gridColumns = [
 <div>
     <div class="form-group">
         <?= Html::a('Добавить тему', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Очистить фильтры', ['index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Очистить фильтры', ['index'], ['class' => 'btn btn-primary pull-right']) ?>
     </div>
 
     <?= GridView::widget([

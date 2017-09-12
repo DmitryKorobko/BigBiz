@@ -32,7 +32,8 @@ use yii\{
                         return \yii\helpers\Html::a(('<span class="glyphicon glyphicon-trash"></span>'),
                             $url,
                             [
-                                'title' => 'Удалить запись'
+                                'title' => 'Удалить запись',
+                                'data-confirm' => 'Вы уверены, что хотите удалить этот элемент?'
                             ]
                         );
                     }
